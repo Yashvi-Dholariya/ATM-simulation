@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Withdraw";
+}
+<div class="row justify-content-center" style="padding-top: 80px;">
+    <div class="col-md-6">
+        <div class="card shadow-sm theme-card">
+            <div class="card-body">
+                <h4>Withdraw Money</h4>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                <form method="post" action="/Account/Withdraw">
+                    <div class="mb-3">
+                        <label class="form-label">Amount (₹)</label>
+                        <input name="amount" type="number" step="0.01" class="form-control" required />
+                    </div>
+                    <button class="btn btn-theme-outline">Withdraw</button>
+                    <a class="btn btn-link" href="/Account/Dashboard">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

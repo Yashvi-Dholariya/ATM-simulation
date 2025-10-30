@@ -1,0 +1,507 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <style>
+        /* Login Page Specific Styles */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, #fff3d1 0%, #f0e9fa 100%);
+            margin: 0;
+        }
+        
+        .login-container {
+            max-width: 506px;
+            width: 100%;
+            padding: 2rem;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(107, 33, 168, 0.2);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7C5CF6 0%, #9E7BFF 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(158, 123, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(158, 123, 255, 0.4);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(158, 123, 255, 0.3);
+        }
+        
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-login:hover::after {
+            opacity: 1;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--lavender-darker) 0%, var(--lavender-dark) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0.5;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #5a4d8c;
+            letter-spacing: -0.5px;
+        }
+        
+        .login-body {
+            padding: 2.5rem;
+            background: white;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-control, .form-control-lg {
+            padding: 0.85rem 1.25rem;
+            border-radius: 10px;
+            border: 2px solid #E5E7EB;
+            background-color: #F9FAFB;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-control-lg:focus {
+            border-color: var(--lavender);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(158, 123, 255, 0.2);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--butter-yellow-dark) 0%, var(--butter-yellow-darker) 100%);
+            border: none;
+            padding: 0.85rem 2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--black);
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(158, 123, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(158, 123, 255, 0.3);
+            color: var(--dark-purple);
+        }
+        
+        .btn-login:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-login:hover::before {
+            opacity: 1;
+        }
+        
+        .password-toggle {
+            background: #F3F4F6;
+            border: 2px solid #E5E7EB;
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+        
+        .password-toggle:hover {
+            background: var(--lavender-light);
+            color: var(--lavender-darker);
+        }
+        
+        .forgot-pin {
+            font-size: 0.9rem;
+            color: var(--lavender-darker);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .forgot-pin:hover {
+            color: var(--lavender-dark);
+            text-decoration: none;
+            transform: translateX(3px);
+        }
+        
+        .input-group-text {
+            background-color: #F3F4F6;
+            border: 2px solid #E5E7EB;
+            border-right: none;
+            color: var(--text-muted);
+            padding: 0 1rem;
+        }
+        
+        .form-floating > label {
+            color: #6C757D;
+        }
+        
+        /* Prevent red text in input fields */
+        input:invalid {
+            box-shadow: none;
+            border-color: #dee2e6 !important;
+        }
+        
+        /* Style for the card number input */
+        #cardNumber {
+            font-family: monospace;
+            letter-spacing: 1px;
+            color: #212529;
+        }
+        
+        /* Remove red outline on invalid input */
+        .form-control:invalid, .form-control.is-invalid {
+            border-color: #dee2e6;
+            padding-right: 0.75rem;
+            background-image: none;
+        }
+        
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            color: var(--lavender);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @@keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: #F56565;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Decorative Elements */
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                rgba(255, 232, 165, 0.7) 0%, 
+                rgba(226, 212, 240, 0.5) 50%,
+                rgba(158, 123, 255, 0.3) 100%);
+            z-index: -1;
+            opacity: 0.8;
+        }
+        
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            right: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            left: -100px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+        
+        /* Responsive Adjustments */
+        @@media (max-width: 576px) {
+            .login-body {
+                padding: 1.75rem;
+            }
+            
+            .login-header {
+                padding: 1.75rem 1.5rem;
+            }
+            
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+}
+<div class="login-page">
+    <div class="login-container">
+        <div class="login-card fade-in">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p class="mb-0">Sign in to your account</p>
+            </div>
+            <div class="login-body">
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+                
+                <form method="post" class="needs-validation" novalidate onsubmit="return prepareForm(this);">
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" 
+                                   oninput="formatCardNumber(this)" maxlength="19"
+                                   data-original-value="">
+                            <label for="cardNumber">Card Number</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="pin" name="pin" placeholder="PIN" required minlength="4" maxlength="4" pattern="\d{4}">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <label for="pin">PIN</label>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter your 4-digit PIN
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#" class="forgot-pin">Forgot PIN?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login mb-3">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
+                    </button>
+                    
+                    <div class="text-center mt-3">
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-shield-lock me-1"></i> Your security is our top priority
+                        </p>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p class="mb-0">Don't have an account? 
+                        <a href="#" class="text-primary text-decoration-none">Contact Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+            </div>
+            <div class="login-footer">
+                <p>&copy; 2025 ATM Simulation</p>
+                <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted small">
+                <i class="bi bi-shield-lock me-1"></i> Your security is our top priority
+</div>
+
+@section Scripts {
+    <script>
+        // Format card number with spaces for display only
+        function formatCardNumber(input) {
+            // Store cursor position
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            
+            // Get the current value and remove all non-digits
+            let value = input.value.replace(/\D/g, '');
+            
+            // Store the raw value in a data attribute
+            input.dataset.originalValue = value;
+            
+            // Add space after every 4 digits for display
+            let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+            
+            // Update the input value (max 19 chars: 16 digits + 3 spaces)
+            input.value = formattedValue.trim().substring(0, 19);
+            
+            // Restore cursor position (adjusting for added spaces)
+            const diff = input.value.length - formattedValue.length;
+            input.setSelectionRange(start + diff, end + diff);
+            
+            // Ensure the card number is submitted without spaces
+            const cardInput = document.querySelector('input[name="cardNumber"]');
+            if (cardInput) {
+                cardInput.value = value; // Set the value to digits only
+            }
+        }
+        
+        // Prepare form for submission with minimal validation
+        function prepareForm(form) {
+            console.log('=== Form Submission Started ===');
+            
+            // Get form inputs
+            const cardInput = form.elements['cardNumber'];
+            const pinInput = form.elements['pin'];
+            
+            if (cardInput) {
+                // Get the raw card number (without any formatting)
+                const rawCardNumber = cardInput.value.replace(/\D/g, '');
+                console.log('Card number submitted:', rawCardNumber);
+                
+                // Update the input with the clean value (no spaces)
+                cardInput.value = rawCardNumber;
+            }
+            
+            if (pinInput) {
+                console.log('PIN submitted:', pinInput.value);
+                
+                // Basic PIN validation
+                if (pinInput.value.length !== 4) {
+                    console.log('Error: PIN must be 4 digits');
+                    alert('Please enter a 4-digit PIN');
+                    return false;
+                }
+            }
+            
+            // Log the complete form data being submitted
+            const formData = new FormData(form);
+            const formDataObj = {};
+            formData.forEach((value, key) => formDataObj[key] = value);
+            console.log('Form data being submitted:', formDataObj);
+            
+            console.log('=== Form Submission Completed ===');
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.querySelector('#togglePassword');
+            if (togglePassword) {
+                const password = document.querySelector('#pin');
+                if (password) {
+                    togglePassword.addEventListener('click', function() {
+                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                        password.setAttribute('type', type);
+                        const icon = this.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('bi-eye');
+                            icon.classList.toggle('bi-eye-slash');
+                        }
+                    });
+                }
+            }
+            
+            // Form validation
+            const form = document.querySelector('.needs-validation');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+            
+            // Auto-format card number on page load and add input event listener
+            const cardInput = document.querySelector('#cardNumber');
+            if (cardInput) {
+                cardInput.addEventListener('input', function(e) {
+                    formatCardNumber(e.target);
+                });
+                
+                if (cardInput.value) {
+                    formatCardNumber(cardInput);
+                }
+            }
+        });
+    </script>
+}

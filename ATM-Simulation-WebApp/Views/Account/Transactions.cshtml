@@ -1,0 +1,33 @@
+@model IEnumerable<ATM_Simulation_WebApp.Models.Transaction>
+@{
+    ViewData["Title"] = "Transactions";
+}
+<div class="card shadow-sm theme-card" style="padding-top: 90px;">
+    <div class="card-body">
+        <h4>Transaction History</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount (₹)</th>
+                    <th>Balance After (₹)</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.Date.ToString("g")</td>
+                        <td>@t.Type</td>
+                        <td>@t.Amount.ToString("N2")</td>
+                        <td>@t.BalanceAfter.ToString("N2")</td>
+                        <td>@t.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-link" href="/Account/Dashboard">Back</a>
+    </div>
+</div>

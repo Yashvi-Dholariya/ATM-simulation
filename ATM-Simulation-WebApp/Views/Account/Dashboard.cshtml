@@ -1,0 +1,275 @@
+@model ATM_Simulation_WebApp.Models.Account
+@{
+    ViewData["Title"] = "Dashboard";
+    var lastTransactions = Model.Transactions?.OrderByDescending(t => t.Date).Take(3).ToList() ?? new List<ATM_Simulation_WebApp.Models.Transaction>();
+}
+
+<style>
+    .dashboard-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .balance-card {
+        background: linear-gradient(135deg, #7C5CF6 0%, #9E7BFF 100%);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .balance-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
+    }
+
+    .welcome-text {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0.5rem;
+    }
+
+    .balance-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+
+    .card-number {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 0.5rem 0;
+    }
+
+    .action-card {
+        background: white;
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .action-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .transaction-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .transaction-item:last-child {
+        border-bottom: none;
+    }
+
+    .transaction-amount {
+        font-weight: 600;
+    }
+
+    .transaction-amount.deposit {
+        color: #28a745;
+    }
+
+    .transaction-amount.withdraw {
+        color: #dc3545;
+    }
+
+    .btn-action {
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-deposit {
+        background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+        color: white;
+    }
+
+    .btn-withdraw {
+        background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+        color: white;
+    }
+
+    .btn-transactions {
+        background: #f8f9fa;
+        color: #495057;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, #7C5CF6 0%, #9E7BFF 100%);
+        border-radius: 3px;
+    }
+</style>
+
+<div class="container py-4">
+    <!-- Spacer for fixed header -->
+    <div style="height: 80px;"></div>
+    
+    <!-- Balance Card -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="dashboard-card balance-card p-4" style="margin-top: 0;">
+                <div class="welcome-text">Welcome back, @Model.Name</div>
+                <div class="card-number">@Model.CardNumber</div>
+                <div class="balance-amount">₹@Model.Balance.ToString("N2")</div>
+                <div class="text-white-50">Available Balance</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <a href="/Account/Deposit" class="text-decoration-none">
+                <div class="dashboard-card action-card">
+                    <div>
+                        <div class="action-icon" style="background: rgba(40, 167, 69, 0.1); color: #28a745;">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <h5 class="mb-3">Deposit</h5>
+                        <p class="text-muted small">Add money to your account</p>
+                    </div>
+                    <button class="btn btn-deposit btn-action mt-3">Deposit Money</button>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="/Account/Withdraw" class="text-decoration-none">
+                <div class="dashboard-card action-card">
+                    <div>
+                        <div class="action-icon" style="background: rgba(220, 53, 69, 0.1); color: #dc3545;">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <h5 class="mb-3">Withdraw</h5>
+                        <p class="text-muted small">Withdraw money from your account</p>
+                    </div>
+                    <button class="btn btn-withdraw btn-action mt-3">Withdraw Money</button>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="/Account/Transactions" class="text-decoration-none">
+                <div class="dashboard-card action-card">
+                    <div>
+                        <div class="action-icon" style="background: rgba(124, 92, 246, 0.1); color: #7C5CF6;">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h5 class="mb-3">Transactions</h5>
+                        <p class="text-muted small">View all transactions</p>
+                    </div>
+                    <button class="btn btn-transactions btn-action mt-3">View All</button>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="section-title m-0">Recent Transactions</h5>
+                    <a href="/Account/Transactions" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                
+                @if (lastTransactions.Any())
+                {
+                    foreach (var transaction in lastTransactions)
+                    {
+                        <div class="transaction-item">
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        @if (transaction.Type == "Deposit")
+                                        {
+                                            <div class="bg-success bg-opacity-10 p-2 rounded-circle">
+                                                <i class="fas fa-arrow-down text-success"></i>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-danger bg-opacity-10 p-2 rounded-circle">
+                                                <i class="fas fa-arrow-up text-danger"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <div class="fw-medium">@transaction.Type</div>
+                                        <div class="text-muted small">@transaction.Date.ToString("MMM dd, yyyy hh:mm tt")</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="transaction-amount @(transaction.Type == "Deposit" ? "deposit" : "withdraw")">
+                                    @(transaction.Type == "Deposit" ? "+" : "-")₹@transaction.Amount.ToString("N2")
+                                </div>
+                                <div class="text-muted small">Balance: ₹@transaction.BalanceAfter.ToString("N2")</div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-exchange-alt fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">No recent transactions found</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ATM-Simulation-WebApp.props" />
+</Project>
