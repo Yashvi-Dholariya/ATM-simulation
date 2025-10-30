@@ -6,7 +6,7 @@ A modern, responsive web application that simulates ATM operations, built with A
 ![.NET Version](https://img.shields.io/badge/.NET-6.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-## 📋 Description
+## Description
 
 This ATM Simulation Web Application provides a realistic online banking experience with essential ATM functionalities. Users can perform various banking operations such as checking balances, making deposits, withdrawing money, and viewing transaction history in a secure and user-friendly interface.
 
