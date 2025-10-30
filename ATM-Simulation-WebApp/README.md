@@ -47,5 +47,5 @@ A modern, responsive web application that simulates ATM operations, built with A
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/yourusername/ATM-Simulation-WebApp.git](https://github.com/yourusername/ATM-Simulation-WebApp.git)
+   git clone [https://github.com/Yashvi-Dholariya/ATM-Simulation.git](https://github.com/Yashvi-Dholariya/ATM-Simulation.git)
    cd ATM-Simulation-WebApp
